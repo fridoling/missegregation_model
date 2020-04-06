@@ -17,10 +17,8 @@ class Cell:
         self.missegregation = missegregation
         self.base_missegregation = missegregation 
         self.ap_loss = ap_loss
-        self.ap3_gain = ap3_gain
         self.ap8_gain = ap8_gain
         self.ms8 = ms8
-        self.ms3 = ms3
     def set_karyotype(self, karyotype):
         self.karyotype = karyotype
         if any(karyotype!=1):
