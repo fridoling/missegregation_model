@@ -28,6 +28,9 @@ params['frac4_vec'] = np.arange(0.1,1.0,0.1)
 params['ms_factor'] = 2
 params['fertility'] = 1
 params['fert_factor'] = 0.9
+params['ap_loss'] = 0.1
+params['ms8'] = 0.001
+params['ap8_gain'] = 0
 
 
 pool = mp.Pool()
