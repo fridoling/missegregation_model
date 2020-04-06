@@ -1,0 +1,8 @@
+*~
+.ipynb*
+*.swp
+res/
+plots/
+__*
+*.ipynb
+.DS_Store
