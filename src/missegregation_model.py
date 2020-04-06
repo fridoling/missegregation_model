@@ -7,7 +7,7 @@ import os
 
 
 class Cell:
-    def __init__(self, n_chroms=16, ploidy=1, strain='None', missegregation=0.001, ap_loss=0.0, ms3=0.0, ap3_gain=0.0, ms8=0.0, ap8_gain=0.0, base_fertility=1.0):
+    def __init__(self, n_chroms=16, ploidy=1, strain='None', missegregation=0.001, ap_loss=0.0, ms8=0.0, ap8_gain=0.0, base_fertility=1.0):
         self.strain = strain
         self.dead = False
         self.aneuploid = False
@@ -27,8 +27,6 @@ class Cell:
             self.aneuploid = True
         if karyotype[8]>1:
             self.missegregation = self.ms8
-        elif karyotype[3]>1:
-            self.missegregation = self.ms3
         else:
             self.missegregation = self.base_missegregation
         if any(karyotype==0):
@@ -42,11 +40,7 @@ class Cell:
             ap8_fac = 1+self.ap8_gain
         else:
             ap8_fac = 1-self.ap_loss            
-        if self.karyotype[3]>1:
-            ap3_fac = 1+self.ap3_gain
-        else:
-            ap3_fac = 1-self.ap_loss
-        total_loss = (1-self.ap_loss)**(n_additional_chroms-2)*ap8_fac*ap3_fac
+        total_loss = (1-self.ap_loss)**(n_additional_chroms-1)*ap8_fac
         self.fertility = self.base_fertility*total_loss
         
 
@@ -121,16 +115,20 @@ def run_simulation(i, j, params):
     pop = Population(size=0)
     traj = np.zeros((n_gen, 2))        
     for n in range(pop1_size):
-        pop.add_cell(Cell(ap_loss = 0.1, 
+        pop.add_cell(Cell(ap_loss = params['ap_loss'], 
                           strain = 'cdc20x1',
                           missegregation=m,
-                          base_fertility=fertility*params['fert_factor']
+                          base_fertility=fertility*params['fert_factor'],
+                          ap8_gain = params['ap8_gain'],
+                          ms8 = params['ms8']
                         ))
     for n in range(pop4_size):
-        pop.add_cell(Cell(ap_loss = 0.1,
+        pop.add_cell(Cell(ap_loss = params['ap_loss'],
                           strain = 'cdc20x4',
                           missegregation=m*params['ms_factor'],
-                          base_fertility=fertility
+                          base_fertility=fertility,
+                          ap8_gain = params['ap8_gain'],
+                          ms8 = params['ms8']
                         ))
     traj[0,] = [pop1_size, pop4_size]
     for n in np.arange(1,n_gen):
