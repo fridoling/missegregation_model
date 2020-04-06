@@ -23,8 +23,8 @@ if not os.path.isdir(res_folder):
 params = {}
 params['n_gen'] = 10
 params['pop_size'] = 100
-params['m_vec'] = np.arange(0.01,0.1,0.01)
-params['frac4_vec'] = np.arange(0.1,1.0,0.1)
+params['m_vec'] = np.linspace(0.0,0.5,11)
+params['frac4_vec'] = np.linspace(0.0,1.0,11)
 params['ms_factor'] = 2
 params['fertility'] = 1
 params['fert_factor'] = 0.9
