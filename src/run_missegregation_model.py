@@ -9,9 +9,10 @@ from datetime import datetime
 import multiprocessing as mp
 import itertools as it
 
+from missegregation_model import *
 
 if len(sys.argv)>1:
-    res_folder = "./res/"+sys.argv[4]+'/'
+    res_folder = "./res/"+sys.argv[1]+'/'
 else:
     res_folder = "./res/"+str(datetime.now()).split('.')[0]+'/'
 if not os.path.isdir('res'):
@@ -32,9 +33,10 @@ params['fert_factor'] = 0.9
 pool = mp.Pool()
 m_range = range(len(params['m_vec']))
 f_range = range(len(params['frac4_vec']))
-res = pool.starmap(run_simulation_parallel, [(i, j, params) for i,j in it.product(m_range, f_range)])
+sys.stdout.write('running simulation for '+str(len(params['m_vec']))+'x'+str(len(params['frac4_vec']))+' index pairs...\n')
+res = pool.starmap(run_simulation, [(i, j, params) for i,j in it.product(m_range, f_range)])
 pool.close()
-trajs = np.stack(results)
 
+trajs = np.reshape(res, (len(params['m_vec']), len(params['frac4_vec']), params['n_gen'], 2))
 with open(res_folder+'simulation_data.pickle', 'wb') as f:
     pickle.dump((trajs, params), f)
