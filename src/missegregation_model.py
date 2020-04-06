@@ -109,3 +109,33 @@ def propagate_population(Pop,  max_size=10000, **kwargs):
         Pop_out.remove_cell()
     return(Pop_out)
 
+def run_simulation(i, j, params):
+    m = params['m_vec'][i]
+    f4 = params['frac4_vec'][j]
+    pop_size = params['pop_size']
+    n_gen = params['n_gen']
+    fertility = params['fertility']
+    pop4_size = np.int64(f4*pop_size)
+    pop1_size = pop_size-pop4_size       
+    pop_in = Population(size=0)
+    pops = [pop_in]
+    traj = np.zeros((n_gen, 2))        
+    for n in range(pop1_size):
+        pop_in.add_cell(Cell(ap_loss = 0.1, 
+                          missegregation=m,
+                          base_fertility=fertility*params['fert_factor']
+                        ))
+    for n in range(pop4_size):
+        pop_in.add_cell(Cell(ap_loss = 0.1,
+                          missegregation=m*params['ms_factor'],
+                          base_fertility=fertility
+                        ))
+    for n in range(n_gen):
+        pop_out = propagate_population(pop_in, max_size=pop_size)
+        pops.append(pop_out)
+        c1_size = len([cell for cell in pop_out.Cells if cell.base_missegregation==m])
+        c4_size = pop_out.size - c1_size
+        pop_in = pop_out
+        traj[n,0] = c1_size
+        traj[n,0] = c4_size
+    return(traj)
