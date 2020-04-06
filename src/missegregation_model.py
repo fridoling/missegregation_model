@@ -7,7 +7,8 @@ import os
 
 
 class Cell:
-    def __init__(self, n_chroms=16, ploidy=1, missegregation=0.001, ap_loss=0.0, ms3=0.0, ap3_gain=0.0, ms8=0.0, ap8_gain=0.0, base_fertility=1.0):
+    def __init__(self, n_chroms=16, ploidy=1, strain='None', missegregation=0.001, ap_loss=0.0, ms3=0.0, ap3_gain=0.0, ms8=0.0, ap8_gain=0.0, base_fertility=1.0):
+        self.strain = strain
         self.dead = False
         self.aneuploid = False
         self.karyotype = np.ones(n_chroms, dtype=int)*ploidy
@@ -121,18 +122,20 @@ def run_simulation(i, j, params):
     traj = np.zeros((n_gen, 2))        
     for n in range(pop1_size):
         pop.add_cell(Cell(ap_loss = 0.1, 
+                          strain = 'cdc20x1',
                           missegregation=m,
                           base_fertility=fertility*params['fert_factor']
                         ))
     for n in range(pop4_size):
         pop.add_cell(Cell(ap_loss = 0.1,
+                          strain = 'cdc20x4',
                           missegregation=m*params['ms_factor'],
                           base_fertility=fertility
                         ))
     traj[0,] = [pop1_size, pop4_size]
     for n in np.arange(1,n_gen):
         pop = propagate_population(pop, max_size=pop_size)
-        c1_size = len([cell for cell in pop.Cells if cell.base_missegregation==m])
+        c1_size = len([cell for cell in pop.Cells if cell.strain=='cdc20x1'])
         c4_size = pop.size - c1_size
         traj[n,0] = c1_size
         traj[n,1] = c4_size
