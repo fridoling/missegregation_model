@@ -28,16 +28,16 @@ if not os.path.isdir(res_path):
     os.mkdir(res_path)
 
 params = {}
-params['n_gen'] = 10
-params['pop_size'] = 100
-params['m_vec'] = np.linspace(0.0,0.5,11)
-params['frac4_vec'] = np.linspace(0.0,1.0,11)
-params['ms_factor'] = 2
+params['n_gen'] = 100
+params['pop_size'] = 1000
+params['ms_factor'] = 1
 params['fertility'] = 1
-params['fert_factor'] = 0.9
+params['fert_factor'] = 1
 params['ap_loss'] = 0.1
 params['ms8'] = 0.001
 params['ap8_gain'] = 0
+params['m_vec'] = np.linspace(0.0,0.5,101)
+params['frac4_vec'] = np.linspace(0.0,1.0,101)
 
 
 pool = mp.Pool()
