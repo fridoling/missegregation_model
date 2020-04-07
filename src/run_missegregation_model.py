@@ -11,10 +11,12 @@ import itertools as it
 
 from missegregation_model import *
 
+
+
 if not os.path.isdir('res'):
     os.mkdir('res')
-if len(sys.argv)>1:
-    res_path = './res/'+sys.argv[1]+'/'
+if len(sys.argv)>2:
+    res_path = './res/'+sys.argv[2]+'/'
 else:
     res_folder = str(datetime.now()).split('.')[0]+'/'
     date_folder = res_folder.split(' ')[0]+'/'
@@ -48,3 +50,12 @@ pool.close()
 trajs = np.reshape(res, (len(params['m_vec']), len(params['frac4_vec']), params['n_gen'], 2))
 with open(res_path+'simulation_data.pickle', 'wb') as f:
     pickle.dump((trajs, params), f)
+
+with open(res_path+'description.txt', 'w') as f:
+    if len(sys.argv)>1:
+        f.write('Description:\n')
+        description = sys.argv[1]
+        f.write(description+'\n\n\n')
+    f.write('Parameters:\n\n')
+    for k, v in params.items():
+        f.write(str(k) + ' >>> '+ str(v) + '\n\n')
