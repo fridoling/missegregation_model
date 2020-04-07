@@ -11,14 +11,19 @@ import itertools as it
 
 from missegregation_model import *
 
-if len(sys.argv)>1:
-    res_folder = "./res/"+sys.argv[1]+'/'
-else:
-    res_folder = "./res/"+str(datetime.now()).split('.')[0]+'/'
 if not os.path.isdir('res'):
     os.mkdir('res')
-if not os.path.isdir(res_folder):
-    os.mkdir(res_folder)
+if len(sys.argv)>1:
+    res_path = './res/'+sys.argv[1]+'/'
+else:
+    res_folder = str(datetime.now()).split('.')[0]+'/'
+    date_folder = res_folder.split(' ')[0]+'/'
+    date_path = './res/'+date_folder
+    res_path = './res/'+date_folder+res_folder
+    if not os.path.isdir(date_path):
+        os.mkdir(date_path)
+if not os.path.isdir(res_path):
+    os.mkdir(res_path)
 
 params = {}
 params['n_gen'] = 10
@@ -41,5 +46,5 @@ res = pool.starmap(run_simulation, [(i, j, params) for i,j in it.product(m_range
 pool.close()
 
 trajs = np.reshape(res, (len(params['m_vec']), len(params['frac4_vec']), params['n_gen'], 2))
-with open(res_folder+'simulation_data.pickle', 'wb') as f:
+with open(res_path+'simulation_data.pickle', 'wb') as f:
     pickle.dump((trajs, params), f)
