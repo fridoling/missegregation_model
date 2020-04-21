@@ -120,7 +120,7 @@ def run_simulation(i, j, params):
                           strain = 'cdc20x1',
                           missegregation=m_c1,
                           base_fertility=fertility*params['fert_factor'],
-                          ap8_gain = params['ap8_gain'],
+                          ap8_gain = params['ap8_gain_x1'],
                           ms8 = params['ms8']
                         ))
     for n in range(pop4_size):
@@ -128,7 +128,7 @@ def run_simulation(i, j, params):
                           strain = 'cdc20x4',
                           missegregation=m_c4,
                           base_fertility=fertility,
-                          ap8_gain = params['ap8_gain'],
+                          ap8_gain = params['ap8_gain_x4'],
                           ms8 = params['ms8']
                         ))
     traj[0,] = [pop1_size, pop4_size]
