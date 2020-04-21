@@ -103,7 +103,8 @@ def propagate_population(Pop,  max_size=10000, **kwargs):
     return(Pop_out)
 
 def run_simulation(i, j, params):
-    m = params['m_vec'][i]
+    mode = params['mode']
+    m = params[mode][i]
     f4 = params['frac4_vec'][j]
     pop_size = params['pop_size']
     n_gen = params['n_gen']
@@ -112,10 +113,12 @@ def run_simulation(i, j, params):
     pop1_size = pop_size-pop4_size       
     pop = Population(size=0)
     traj = np.zeros((n_gen, 2))        
+    m_c1 = m if mode=='m_vec' else params['m_vec']
+    m_c4 = m*params['ms_factor'] if mode=='m_vec' else params['m_vec']*m
     for n in range(pop1_size):
         pop.add_cell(Cell(ap_loss = params['ap_loss'], 
                           strain = 'cdc20x1',
-                          missegregation=m,
+                          missegregation=m_c1,
                           base_fertility=fertility*params['fert_factor'],
                           ap8_gain = params['ap8_gain'],
                           ms8 = params['ms8']
@@ -123,7 +126,7 @@ def run_simulation(i, j, params):
     for n in range(pop4_size):
         pop.add_cell(Cell(ap_loss = params['ap_loss'],
                           strain = 'cdc20x4',
-                          missegregation=m*params['ms_factor'],
+                          missegregation=m_c4,
                           base_fertility=fertility,
                           ap8_gain = params['ap8_gain'],
                           ms8 = params['ms8']
