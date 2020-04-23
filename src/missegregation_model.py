@@ -121,7 +121,7 @@ def run_simulation(i, j, params):
                           missegregation=m_c1,
                           base_fertility=fertility*params['fert_factor'],
                           ap8_gain = params['ap8_gain_x1'],
-                          ms8 = params['ms8']
+                          ms8 = params['ms8_x1']
                         ))
     for n in range(pop4_size):
         pop.add_cell(Cell(ap_loss = params['ap_loss'],
@@ -129,7 +129,7 @@ def run_simulation(i, j, params):
                           missegregation=m_c4,
                           base_fertility=fertility,
                           ap8_gain = params['ap8_gain_x4'],
-                          ms8 = params['ms8']
+                          ms8 = params['ms8_x4']
                         ))
     traj[0,] = [pop1_size, pop4_size]
     for n in np.arange(1,n_gen):
